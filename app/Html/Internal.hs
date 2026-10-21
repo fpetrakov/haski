@@ -13,6 +13,26 @@ html_ title content =
            )
         )
 
+ul_ :: [Structure] -> Structure
+ul_ = list_ Unordered
+
+ol_ :: [Structure] -> Structure
+ol_ = list_ Ordered
+
+data ListType
+    = Unordered
+    | Ordered
+
+list_ :: ListType -> [Structure] -> Structure
+list_ ltype =
+    Structure . el (getTag ltype) . concatMap (el "li" . getStructureString)
+    where
+        getTag Unordered = "ul"
+        getTag Ordered   = "ol"
+
+code_ :: String -> Structure
+code_ = Structure . el "code" . escape
+
 p_ :: String -> Structure
 p_ = Structure . el "p" . escape
 
